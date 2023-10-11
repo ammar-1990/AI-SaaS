@@ -3,9 +3,11 @@ import Heading from "@/components/heading";
 import { MessageSquare } from "lucide-react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {useRouter} from 'next/navigation'
 import { useForm } from "react-hook-form";
-
+import axios from 'axios'
 import { Button } from "@/components/ui/button";
+import { useState, useEffect} from 'react'
 import {
   Form,
   FormControl,
@@ -16,7 +18,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+
 import { cn } from "@/lib/utils";
+import Empty from "@/components/empty";
+import Loader from "@/components/loader";
+import UserAvatar from "@/components/user-avatar";
+import BotAvatar from "@/components/bot-avatar";
 
 type Props = {};
 
@@ -25,6 +32,37 @@ export const formSchema = z.object({
 });
 
 const ConversationPage = (props: Props) => {
+
+    const test = [ 
+        {
+            role:'user',
+            content:'what is the biggest planet in solar system'
+        },
+        {
+            role:'bot',
+            content:'the biggest planet in solar system is Jupiter'
+        },
+        {
+            role:'user',
+            content:'what is the colort of the snow'
+        },
+        {
+            role:'bot',
+            content:'the colort of the snow is white'
+        },
+      
+    ]
+
+    const [messages, setMessages] = useState<any[]>([])
+
+    useEffect(()=>{
+setMessages(test)
+
+    },[])
+
+
+const router = useRouter()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,8 +70,31 @@ const ConversationPage = (props: Props) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+
+
+ async function onSubmit(values: z.infer<typeof formSchema>) {
+try {
+    
+const userMessage = {
+    role:'user',
+    content:values.prompt
+}
+
+const newMessages = [...messages,userMessage]
+const response = await axios.post('/api/conversation',{messages:newMessages})
+
+setMessages(prev=>[...prev,userMessage,response.data])
+
+form.reset()
+
+
+} catch (error) {
+    console.log(error)
+}finally{
+router.refresh()
+}
+
+   
   }
   const isLoading = form.formState.isSubmitting;
   const isError = form.getFieldState("prompt").error;
@@ -84,8 +145,19 @@ const ConversationPage = (props: Props) => {
           </form>
         </Form>
       </div>
-      <div className="spac-y-4 px-4 lg:px-8">
-        Messages content
+      <div className="spac-y-4 px-4 lg:px-8 max-h-[450px] overflow-y-auto">
+        
+        {isLoading &&(<div className="bg-muted mb-4 p-10 rounded-lg"><Loader/></div>)}
+        {!messages.length && !isLoading &&(<Empty label="No conversation started" />)}
+       <div className="flex flex-col-reverse gap-y-4 items-start">
+        {messages.map((message)=>(
+        <div key={message.content} className={cn("flex items-center gap-x-8 p-8 rounded-lg ", message.role === 'user' ? 'border border-black/10' : 'bg-muted')}>
+            {message.role === 'user' ? <UserAvatar /> : <BotAvatar />}
+            <p className="text-sm">{message.content}</p>
+            </div>
+        ))}
+
+       </div>
       </div>
     </div>
   );
