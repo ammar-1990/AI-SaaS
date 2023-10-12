@@ -229,7 +229,7 @@ const [images, setImages] = useState<string[]>([])
      {images.map((image)=>
      <Card 
      key={image}
-     className="rounded-lg"
+     className="rounded-lg overflow-hidden"
      >
       <div className="relative aspect-square">
         <Image
