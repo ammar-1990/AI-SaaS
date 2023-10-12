@@ -33,32 +33,11 @@ export const formSchema = z.object({
 
 const ConversationPage = (props: Props) => {
 
-    const test = [ 
-        {
-            role:'user',
-            content:'what is the biggest planet in solar system'
-        },
-        {
-            role:'bot',
-            content:'the biggest planet in solar system is Jupiter'
-        },
-        {
-            role:'user',
-            content:'what is the colort of the snow'
-        },
-        {
-            role:'bot',
-            content:'the colort of the snow is white'
-        },
-      
-    ]
+  
 
     const [messages, setMessages] = useState<any[]>([])
 
-    useEffect(()=>{
-setMessages(test)
-
-    },[])
+   
 
 
 const router = useRouter()
@@ -124,6 +103,7 @@ router.refresh()
                 <FormItem className="col-span-12 lg:col-span-10">
                   <FormControl>
                     <Input
+                    autoComplete="off"
                       disabled={isLoading}
                       placeholder="Write your question"
                       className="border-none focus-visible:ring-0 focus-visible:ring-transparent outline-none"
