@@ -19,10 +19,10 @@ const {prompt} = await req.json()
 
 if(!prompt) return new NextResponse('No messages entered',{status:404})
 
+
 const trialMode = await checkUserLimit()
 
 if(!trialMode) return new NextResponse('Free trial expired',{status:403})
-
 
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN,
@@ -30,20 +30,19 @@ const replicate = new Replicate({
 
 
   const response = await replicate.run(
-    "riffusion/riffusion:8cf61ea6c56afd61d8f5b9ffd14d7c216c0a93844ce2d82ac1c9ecc9c7f24e05",
+    "anotherjesse/zeroscope-v2-xl:9f747673945c62801b13b84701c783929c0ee784e4748ec062204894dda1a351",
     {
       input: {
-        prompt_a:prompt
+        prompt: prompt
       }
     }
   );
 
   await increaseApiCount()
-
 return NextResponse.json(response)
 
     } catch (error) {
-        console.log('[POST_MUSIC_ERROR]',error)
+        console.log('[POST_VIDEO_ERROR]',error)
         return new NextResponse('internal error',{status:500})
     }
 

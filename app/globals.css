@@ -82,3 +82,11 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+.myScroll::-webkit-scrollbar{
+  @apply w-1 
+}
+
+.myScroll::-webkit-scrollbar-thumb{
+  @apply bg-black
+}

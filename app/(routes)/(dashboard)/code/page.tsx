@@ -28,7 +28,7 @@ import ReactMarkdown from "react-markdown";
 type Props = {};
 
 export const formSchema = z.object({
-  prompt: z.string().min(1, { message: "Write a question" }),
+  prompt: z.string().min(1, { message: "Prompt is required" }),
 });
 
 const CodePage = (props: Props) => {

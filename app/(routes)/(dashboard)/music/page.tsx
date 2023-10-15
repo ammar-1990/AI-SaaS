@@ -28,7 +28,7 @@ import BotAvatar from "@/components/bot-avatar";
 type Props = {};
 
 export const formSchema = z.object({
-  prompt: z.string().min(1, { message: "Write a question" }),
+  prompt: z.string().min(1, { message: "Prompt is required" }),
 });
 
 const MusicPage = (props: Props) => {
@@ -125,7 +125,7 @@ router.refresh()
         
         {isLoading &&(<div className="bg-muted mb-4 p-10 rounded-lg"><Loader/></div>)}
         {!music && !isLoading &&(<Empty label="No music generated" />)}
-     {music&&<audio controls className="w-full mt-5">
+     {music&&<audio controls className="w-full mt-8">
 <source src={music} />
      </audio>}
       </div>

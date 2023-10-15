@@ -1,0 +1,1 @@
+export const MAX_API_REQUESTS = 5

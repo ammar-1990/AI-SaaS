@@ -1,6 +1,6 @@
 "use client";
 import Heading from "@/components/heading";
-import { MessageSquare } from "lucide-react";
+import { Music, VideoIcon } from "lucide-react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {useRouter} from 'next/navigation'
@@ -31,11 +31,11 @@ export const formSchema = z.object({
   prompt: z.string().min(1, { message: "Prompt is required" }),
 });
 
-const ConversationPage = (props: Props) => {
+const VideoPage = (props: Props) => {
 
   
 
-    const [messages, setMessages] = useState<any[]>([])
+    const [video, setVideo] = useState<string>()
 
    
 
@@ -54,15 +54,11 @@ const router = useRouter()
  async function onSubmit(values: z.infer<typeof formSchema>) {
 try {
     
-const userMessage = {
-    role:'user',
-    content:values.prompt
-}
+setVideo('')
 
-const newMessages = [...messages,userMessage]
-const response = await axios.post('/api/conversation',{messages:newMessages})
+const response = await axios.post('/api/video',values)
 
-setMessages(prev=>[...prev,userMessage,response.data])
+setVideo(response.data[0])
 
 form.reset()
 
@@ -81,11 +77,11 @@ router.refresh()
   return (
     <div className="space-y-6">
       <Heading
-        title="Conversation"
-        description="The mos advanced conversation model"
-        icon={MessageSquare}
-        color="text-violet-500"
-        bgColor="bg-violet-500/10"
+        title="Video Generagtion"
+        description="Turn your prompt to Video with Mystic"
+        icon={VideoIcon}
+        color="text-orange-500"
+        bgColor="bg-orange-500/10"
       />
       <div className="px-4 lg:px-8">
         <Form {...form}>
@@ -105,7 +101,7 @@ router.refresh()
                     <Input
                     autoComplete="off"
                       disabled={isLoading}
-                      placeholder="Write your question"
+                      placeholder="What would you like to wach..."
                       className="border-none focus-visible:ring-0 focus-visible:ring-transparent outline-none"
                       {...field}
                     />
@@ -125,22 +121,16 @@ router.refresh()
           </form>
         </Form>
       </div>
-      <div className="spac-y-4 px-4 lg:px-8 max-h-[450px] overflow-y-auto">
+      <div className="spac-y-4 px-4 lg:px-8 max-h-[450px] overflow-y-auto myScroll">
         
         {isLoading &&(<div className="bg-muted mb-4 p-10 rounded-lg"><Loader/></div>)}
-        {!messages.length && !isLoading &&(<Empty label="No conversation started" />)}
-       <div className="flex flex-col-reverse gap-y-4 items-start">
-        {messages.map((message)=>(
-        <div key={message.content} className={cn("flex items-center gap-x-8 p-8 rounded-lg ", message.role === 'user' ? 'border border-black/10' : 'bg-muted')}>
-            {message.role === 'user' ? <UserAvatar /> : <BotAvatar />}
-            <p className="text-sm">{message.content}</p>
-            </div>
-        ))}
-
-       </div>
+        {!video && !isLoading &&(<Empty label="No video generated" />)}
+     {video&&<video controls className="w-full mt-8 aspect-video rounded-lg border bg-black">
+<source src={video} />
+     </video>}
       </div>
     </div>
   );
 };
 
-export default ConversationPage;
+export default VideoPage;
