@@ -25,6 +25,8 @@ import Loader from "@/components/loader";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
 import ReactMarkdown from "react-markdown";
+import useProModal from "@/hooks/pro-modal";
+
 type Props = {};
 
 export const formSchema = z.object({
@@ -33,6 +35,8 @@ export const formSchema = z.object({
 
 const CodePage = (props: Props) => {
   const [messages, setMessages] = useState<any[]>([]);
+
+  const {onOpen} = useProModal()
 
   const router = useRouter();
 
@@ -56,7 +60,11 @@ const CodePage = (props: Props) => {
       setMessages((prev) => [...prev, userMessage, response.data]);
 
       form.reset();
-    } catch (error) {
+    } catch (error:any) {
+      if(error?.response?.status ===403){
+        onOpen()
+
+      }
       console.log(error);
     } finally {
       router.refresh();

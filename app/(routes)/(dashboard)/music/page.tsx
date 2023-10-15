@@ -24,6 +24,7 @@ import Empty from "@/components/empty";
 import Loader from "@/components/loader";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
+import useProModal from "@/hooks/pro-modal";
 
 type Props = {};
 
@@ -36,6 +37,7 @@ const MusicPage = (props: Props) => {
   
 
     const [music, setMusic] = useState<string>()
+    const {onOpen} = useProModal()
 
    
 
@@ -63,8 +65,12 @@ setMusic(response.data.audio)
 form.reset()
 
 
-} catch (error) {
+} catch (error:any) {
     console.log(error)
+    if(error?.response?.status ===403){
+      onOpen()
+
+    }
 }finally{
 router.refresh()
 }

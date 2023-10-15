@@ -24,6 +24,7 @@ import Empty from "@/components/empty";
 import Loader from "@/components/loader";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
+import useProModal from "@/hooks/pro-modal";
 
 type Props = {};
 
@@ -37,7 +38,7 @@ const VideoPage = (props: Props) => {
 
     const [video, setVideo] = useState<string>()
 
-   
+   const {onOpen} = useProModal()
 
 
 const router = useRouter()
@@ -63,8 +64,12 @@ setVideo(response.data[0])
 form.reset()
 
 
-} catch (error) {
+} catch (error:any) {
     console.log(error)
+    if(error?.response?.status ===403){
+      onOpen()
+
+    }
 }finally{
 router.refresh()
 }

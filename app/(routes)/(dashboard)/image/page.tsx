@@ -36,6 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Card, CardFooter } from "@/components/ui/card";
+import useProModal from "@/hooks/pro-modal";
 
 
 type Props = {};
@@ -88,6 +89,7 @@ const resolutionOptions = [
 const ImagePage = (props: Props) => {
 
 const [images, setImages] = useState<string[]>([])
+const {onOpen} = useProModal()
 
 
   const router = useRouter();
@@ -114,8 +116,12 @@ const [images, setImages] = useState<string[]>([])
       setImages(urls)
      
       form.reset();
-    } catch (error) {
+    } catch (error:any) {
       console.log(error);
+      if(error?.response?.status ===403){
+        onOpen()
+
+      }
     } finally {
       router.refresh();
     }

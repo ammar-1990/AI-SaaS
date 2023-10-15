@@ -14,15 +14,18 @@ import {
   Code,
   Settings,
 } from "lucide-react";
+import Counter from "./counter";
 
-type Props = {};
+type Props = {
+  count: number;
+};
 
 const montserrat = Montserrat({
   weight: "700",
   subsets: ["latin"],
 });
 
-const SideBar = (props: Props) => {
+const SideBar = ({ count = 0 }: Props) => {
   const router = useRouter();
 
   const pathname = usePathname();
@@ -87,7 +90,7 @@ const SideBar = (props: Props) => {
         </div>
         <p className={cn("text-white", montserrat.className)}>Mystic</p>
       </div>
-      <div className="space-y-1 mt-12">
+      <div className="space-y-1 mt-12 flex-1">
         {routes.map((route) => (
           <div
             key={route.href}
@@ -104,6 +107,7 @@ const SideBar = (props: Props) => {
           </div>
         ))}
       </div>
+      <Counter count={count} />
     </div>
   );
 };

@@ -24,6 +24,7 @@ import Empty from "@/components/empty";
 import Loader from "@/components/loader";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
+import useProModal from "@/hooks/pro-modal";
 
 type Props = {};
 
@@ -37,7 +38,7 @@ const ConversationPage = (props: Props) => {
 
     const [messages, setMessages] = useState<any[]>([])
 
-   
+   const {onOpen} = useProModal()
 
 
 const router = useRouter()
@@ -67,8 +68,12 @@ setMessages(prev=>[...prev,userMessage,response.data])
 form.reset()
 
 
-} catch (error) {
+} catch (error:any) {
     console.log(error)
+    if(error?.response?.status ===403){
+      onOpen()
+
+    }
 }finally{
 router.refresh()
 }
