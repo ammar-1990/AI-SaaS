@@ -11,9 +11,11 @@ import { Button } from "./ui/button";
 
 import { useState, useEffect} from 'react'
 
-type Props = {};
+type Props = {
+  count: number
+};
 
-const MobileSidebar = (props: Props) => {
+const MobileSidebar = ({count}: Props) => {
 
 
     const [mounted, setMounted] = useState(false)
@@ -30,7 +32,7 @@ if(!mounted) return null
         </Button>
       </SheetTrigger>
       <SheetContent side={"left"} className="p-0" style={{ color: "white" }}>
-        <SideBar />
+        <SideBar count={count} />
       </SheetContent>
     </Sheet>
   );

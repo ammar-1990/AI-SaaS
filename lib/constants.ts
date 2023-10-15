@@ -1,1 +1,1 @@
-export const MAX_API_REQUESTS = 5
+export const MAX_API_REQUESTS = 2
