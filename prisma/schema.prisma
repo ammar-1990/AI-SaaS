@@ -26,4 +26,16 @@ model UserApiLimit {
 
 }
 
+model UserSubscribtion{
+
+    id                        String @id @default(auto()) @map("_id") @db.ObjectId
+    userId                    String @unique
+    stripeCustomerId          String? @unique @map(name:"stripe_customer_id")
+    stripeSubscribtionId      String? @unique @map(name:"stripe_subscribtion_id")
+    stripePriceId             String? @unique @map(name:"stripe_price_id")
+    stripeCurrentPeriodEnd    DateTime? @map(name:"stripe_current_period_end")
+
+
+}
+
 
