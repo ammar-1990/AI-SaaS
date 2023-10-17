@@ -25,6 +25,7 @@ import Loader from "@/components/loader";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
 import useProModal from "@/hooks/pro-modal";
+import toast from "react-hot-toast";
 
 type Props = {};
 
@@ -73,6 +74,8 @@ form.reset()
     if(error?.response?.status ===403){
       onOpen()
 
+    }else{
+      toast.error('Something went wrong')
     }
 }finally{
 router.refresh()

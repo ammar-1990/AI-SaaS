@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs";
 import OpenAI from "openai";
 import { NextResponse} from 'next/server'
 import { checkUserLimit, increaseApiCount } from "@/lib/increase-api-count";
+import { checkSubscription } from "@/lib/subscription";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -21,15 +22,16 @@ const {messages} = await req.json()
 if(!messages) return new NextResponse('No messages entered',{status:404})
 
 const trialMode = await checkUserLimit()
+const isPro = await checkSubscription()
 
-if(!trialMode) return new NextResponse('Free trial expired',{status:403})
+if(!trialMode && !isPro) return new NextResponse('Free trial expired',{status:403})
 
 const response = await openai.chat.completions.create({
     model:'gpt-3.5-turbo',
     messages
 })
+if(!isPro){await increaseApiCount()}
 
-await increaseApiCount()
 
 return NextResponse.json(response.choices[0].message)
 

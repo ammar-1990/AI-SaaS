@@ -1,4 +1,5 @@
 import { checkUserLimit, increaseApiCount } from "@/lib/increase-api-count";
+import { checkSubscription } from "@/lib/subscription";
 import { auth } from "@clerk/nextjs";
 
 import { NextResponse} from 'next/server'
@@ -20,8 +21,9 @@ const {prompt} = await req.json()
 if(!prompt) return new NextResponse('No messages entered',{status:404})
 
 const trialMode = await checkUserLimit()
+const isPro = await checkSubscription()
 
-if(!trialMode) return new NextResponse('Free trial expired',{status:403})
+if(!trialMode && !isPro) return new NextResponse('Free trial expired',{status:403})
 
 
 const replicate = new Replicate({
@@ -37,8 +39,10 @@ const replicate = new Replicate({
       }
     }
   );
-
+if(!isPro){
   await increaseApiCount()
+}
+
 
 return NextResponse.json(response)
 

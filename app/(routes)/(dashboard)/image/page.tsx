@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/select"
 import { Card, CardFooter } from "@/components/ui/card";
 import useProModal from "@/hooks/pro-modal";
+import toast from "react-hot-toast";
 
 
 type Props = {};
@@ -121,6 +122,8 @@ const {onOpen} = useProModal()
       if(error?.response?.status ===403){
         onOpen()
 
+      }else{
+        toast.error('Something went wrong')
       }
     } finally {
       router.refresh();

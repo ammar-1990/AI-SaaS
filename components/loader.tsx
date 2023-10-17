@@ -10,7 +10,7 @@ const Loader = (props: Props) => {
             <Image fill src={'/Mystic-logo.png'} alt='logo' />
        
         </div>
-        <p className='text-sm text-muted-foreground'>Mystic is bringing the answer...</p>
+        <p className='text-sm text-muted-foreground'>Mystic is working...</p>
 
     </div>
   )

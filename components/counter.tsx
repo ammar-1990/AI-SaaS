@@ -9,12 +9,13 @@ import { Zap } from 'lucide-react'
 import useProModal from '@/hooks/pro-modal'
 
 type Props = {
-    count:number
+    count:number,
+    isPro:boolean
 }
 
-const Counter = ({count}: Props) => {
+const Counter = ({count, isPro}: Props) => {
 const {onOpen} = useProModal()
-
+if(isPro) return null
   return (
   <Card className='border-0  py-5 bg-white/10 rounded-lg'>
     <CardContent className='space-y-3 px-5 text-white'>

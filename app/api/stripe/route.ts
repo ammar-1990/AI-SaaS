@@ -27,6 +27,7 @@ export async function GET() {
         customer: userSubscribtion.stripeCustomerId,
         return_url: settingsUrl,
       });
+      console.log('hi')
       return new NextResponse(JSON.stringify({ url: stripeSession.url }));
     }
 

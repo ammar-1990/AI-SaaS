@@ -26,6 +26,7 @@ import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
 import ReactMarkdown from "react-markdown";
 import useProModal from "@/hooks/pro-modal";
+import toast from "react-hot-toast";
 
 type Props = {};
 
@@ -49,6 +50,7 @@ const CodePage = (props: Props) => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      
       const userMessage = {
         role: "user",
         content: values.prompt,
@@ -64,6 +66,8 @@ const CodePage = (props: Props) => {
       if(error?.response?.status ===403){
         onOpen()
 
+      }else{
+        toast.error('Something went wrong')
       }
       console.log(error);
     } finally {

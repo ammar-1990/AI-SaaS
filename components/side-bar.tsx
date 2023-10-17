@@ -18,6 +18,7 @@ import Counter from "./counter";
 
 type Props = {
   count: number;
+  isPro:boolean
 };
 
 const montserrat = Montserrat({
@@ -25,7 +26,7 @@ const montserrat = Montserrat({
   subsets: ["latin"],
 });
 
-const SideBar = ({ count = 0 }: Props) => {
+const SideBar = ({isPro,count = 0 }: Props) => {
   const router = useRouter();
 
   const pathname = usePathname();
@@ -107,7 +108,7 @@ const SideBar = ({ count = 0 }: Props) => {
           </div>
         ))}
       </div>
-      <Counter count={count} />
+      <Counter isPro={isPro} count={count} />
     </div>
   );
 };
