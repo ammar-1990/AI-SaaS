@@ -30,7 +30,7 @@ import toast from "react-hot-toast";
 
 type Props = {};
 
-export const formSchema = z.object({
+ const formSchema = z.object({
   prompt: z.string().min(1, { message: "Prompt is required" }),
 });
 
